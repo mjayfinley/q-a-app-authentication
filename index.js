@@ -4,6 +4,8 @@ const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
 const path = require('path')
+const jwt = require('express-jwt')
+const jwksRsa = require('jwks-rsa')
 // const mustacheExpress = require('mustache-express') // example for using server side views
 
 // I mentioned this bit of code already, just make sure that it's in the server once at the top of the file
@@ -68,21 +70,35 @@ app.get('/:id', (req,res) => {
   res.send(question[0])
 })
 
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://mjayfinley.auth0.com/.well-known/jwks.json`
+  }),
+
+  audience: 'Y2JhEXmNRr0kwOibqonXubZLharoiPzw',
+  issuer: `https://mjayfinley.auth0.com/`,
+  algorithms: ['RS256']
+})
+
 //insert new question
-app.post('/', (req,res) => {
+app.post('/', checkJwt, (req,res) => {
   const {title, description} = req.body;
   const newQuestion = {
     id: questions.length + 1,
     title,
     description,
     answers: [],
+    author: req.user.name,
   }
   questions.push(newQuestion);
   res.status(200).send()
 })
 
 //insert a new answer to question
-app.post('/answer/:id', (req, res) => {
+app.post('/answer/:id', checkJwt, (req, res) => {
   const {answer} = req.body;
 
   const question = questions.filter(q => (q.id === parseInt(req.params.id)))
@@ -91,6 +107,7 @@ app.post('/answer/:id', (req, res) => {
 
   question[0].answers.push({
     answer,
+    authoer: req.user.name,
   })
 
   res.status(200).send()
