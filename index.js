@@ -30,22 +30,22 @@ app.use(morgan('combined'))
 //database
 
 const questions = [
-  {
-    'id': 1,
-    'title': 'How do I make a sandwhich?',
-    'description': 'I am trying very hard, but I do not know how to make a sandwhich',
-    'answers': [
-      {
-        'answer': 'Just spread butter on the bread, and that is it.'
-      }
-    ],
-  },
-  {
-    'id': 2,
-    'title': 'What is React?',
-    'description': 'I have been hearing a lot about React. What is it?',
-    'answers': [],
-  },
+  // {
+  //   'id': 1,
+  //   'title': 'How do I make a sandwhich?',
+  //   'description': 'I am trying very hard, but I do not know how to make a sandwhich',
+  //   'answers': [
+  //     {
+  //       'answer': 'Just spread butter on the bread, and that is it.'
+  //     }
+  //   ],
+  // },
+  // {
+  //   'id': 2,
+  //   'title': 'What is React?',
+  //   'description': 'I have been hearing a lot about React. What is it?',
+  //   'answers': [],
+  // },
 ];
 
 // ROUTES GO HERE
